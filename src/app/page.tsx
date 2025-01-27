@@ -4,7 +4,7 @@ import { Section } from '@/components/ui/section';
 
 export default function Home() {
   return (
-    <main className='min-h-screen p-4'>
+    <main className='min-h-screen '>
       <nav className='flex justify-end p-4'>
         <ThemeSwitch />
       </nav>

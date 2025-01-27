@@ -31,12 +31,7 @@ function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
 export default function Page() {
   return (
     <main>
-      <Section
-        background='lightGray'
-        darkBackground='darkPurple'
-        fullHeight
-        noPadding
-      >
+      <Section fullHeight noPadding>
         <Container
           flex
           direction='row'

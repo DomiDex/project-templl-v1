@@ -44,12 +44,16 @@ export function Section({
   children,
   ...props
 }: SectionProps) {
+  const darkBgClass = darkBackground
+    ? backgroundColors[darkBackground].replace('bg-', 'dark:bg-')
+    : '';
+
   return (
     <Component
       className={cn(
         !noPadding && paddingSizes[padding],
         background && backgroundColors[background],
-        darkBackground && `dark:${backgroundColors[darkBackground]}`,
+        darkBgClass,
         fullHeight && 'h-screen',
         className
       )}

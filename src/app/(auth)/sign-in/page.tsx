@@ -31,12 +31,7 @@ function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
 export default function Page() {
   return (
     <main>
-      <Section
-        background='lightGray'
-        darkBackground='darkPurple'
-        fullHeight
-        noPadding
-      >
+      <Section fullHeight noPadding>
         <Container
           flex
           direction='row'
@@ -46,8 +41,8 @@ export default function Page() {
           size='full'
           noPadding
         >
-          <div className='hidden md:flex md:w-2/3 flex-col items-center justify-center '>
-            <div className='relative w-96 h-96 '>
+          <div className='hidden md:flex md:w-2/3 flex-col items-center justify-center'>
+            <div className='relative w-96 h-96'>
               <Image
                 src='/images/cool-text.webp'
                 alt='Cool Text'
@@ -58,7 +53,7 @@ export default function Page() {
               />
             </div>
           </div>
-          <div className='w-full h-screen md:w-1/3 bg-gray-50 dark:bg-purple-800/95 flex flex-col items-center justify-center'>
+          <div className='w-full h-screen md:w-1/3 bg-gray-50 dark:bg-purple-800 flex flex-col items-center justify-center'>
             <div className='w-full max-w-sm px-8'>
               <h1 className='text-2xl font-bold mb-8 text-center text-gray-900 dark:text-gray-50'>
                 Sign In
