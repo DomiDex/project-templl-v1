@@ -46,7 +46,7 @@ export default function Page() {
           size='full'
           noPadding
         >
-          <div className='hidden md:flex md:w-2/3 flex-col items-center justify-center'>
+          <div className='hidden md:flex md:w-2/3 flex-col items-center justify-center '>
             <div className='relative w-96 h-96 '>
               <Image
                 src='/images/cool-text.webp'
