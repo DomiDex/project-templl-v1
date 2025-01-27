@@ -29,11 +29,11 @@ export function SignInForm() {
       const result = await signIn(data);
 
       if ('error' in result) {
-        setError(result.error);
+        setError(result.error || 'An error occurred');
       } else if ('success' in result) {
         router.replace(result.redirectTo);
       }
-    } catch (error) {
+    } catch {
       setError('An unexpected error occurred');
     } finally {
       setLoading(false);
@@ -41,41 +41,65 @@ export function SignInForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='space-y-4'>
-      {error && <AuthError message={error} />}
-      <Input
-        type='email'
-        name='email'
-        placeholder='Email'
-        required
-        disabled={loading}
-      />
-      <div className='space-y-2'>
+    <div className='space-y-4'>
+      <form onSubmit={handleSubmit} className='space-y-4'>
+        {error && <AuthError message={error} />}
         <Input
-          type='password'
-          name='password'
-          placeholder='Password'
+          type='email'
+          name='email'
+          placeholder='Email'
           required
           disabled={loading}
         />
-        <div className='flex justify-end'>
-          <Link
-            href='/forgot-password'
-            className='text-sm text-purple-500 hover:text-purple-600 dark:text-purple-200 dark:hover:text-purple-100 transition-colors'
-          >
-            Forgot password?
-          </Link>
+        <div className='space-y-2'>
+          <Input
+            type='password'
+            name='password'
+            placeholder='Password'
+            required
+            disabled={loading}
+          />
+          <div className='flex justify-end'>
+            <Link
+              href='/forgot-password'
+              className='text-sm text-purple-500 hover:text-purple-600 dark:text-purple-200 dark:hover:text-purple-100 transition-colors'
+            >
+              Forgot password?
+            </Link>
+          </div>
+        </div>
+        <Button
+          fullWidth
+          size='lg'
+          type='submit'
+          disabled={loading}
+          className='bg-purple-500 hover:bg-purple-600 dark:bg-purple-400 dark:hover:bg-purple-300 dark:text-white transition-colors'
+        >
+          {loading ? 'Signing in...' : 'Sign In'}
+        </Button>
+      </form>
+
+      <div className='relative'>
+        <div className='absolute inset-0 flex items-center'>
+          <span className='w-full border-t border-gray-300 dark:border-gray-600' />
+        </div>
+        <div className='relative flex justify-center text-sm'>
+          <span className='px-2 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-purple-800'>
+            Or continue with
+          </span>
         </div>
       </div>
+
       <Button
+        type='button'
+        variant='outline'
         fullWidth
         size='lg'
-        type='submit'
-        disabled={loading}
-        className='bg-purple-500 hover:bg-purple-600 dark:bg-purple-400 dark:hover:bg-purple-300 dark:text-white transition-colors'
+        className='flex items-center justify-center gap-2 border-[1px] border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-purple-700 transition-colors'
       >
-        {loading ? 'Signing in...' : 'Sign In'}
+        <GoogleIcon className='w-5 h-5' />
+        <span>Sign in with Google</span>
       </Button>
-    </form>
+    </div>
   );
 }
