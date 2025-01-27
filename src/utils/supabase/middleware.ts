@@ -37,29 +37,56 @@ export const updateSession = async (request: NextRequest) => {
 
     // This will refresh session if expired - required for Server Components
     // https://supabase.com/docs/guides/auth/server-side/nextjs
-    const user = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    // protected routes
-    if (request.nextUrl.pathname.startsWith('/protected') && user.error) {
-      return NextResponse.redirect(new URL('/sign-in', request.url));
+    // If trying to access a protected route
+    if (request.nextUrl.pathname.startsWith('/protected/')) {
+      if (!user) {
+        return NextResponse.redirect(new URL('/sign-in', request.url));
+      }
+
+      // Extract the username/id from the URL
+      const urlPath = request.nextUrl.pathname;
+      const requestedId = urlPath.split('/protected/')[1];
+
+      // Get the user's profile to check username
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('profile_username')
+        .eq('id', user.id)
+        .single();
+
+      // Check if the requested path matches the user's profile
+      if (
+        requestedId !== profile?.profile_username &&
+        requestedId !== user.id
+      ) {
+        return NextResponse.redirect(new URL('/', request.url));
+      }
     }
 
-    if (request.nextUrl.pathname === '/' && !user.error) {
-      return NextResponse.redirect(new URL('/protected', request.url));
+    if (request.nextUrl.pathname === '/' && user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('profile_username')
+        .eq('id', user.id)
+        .single();
+
+      return NextResponse.redirect(
+        new URL(
+          `/protected/${profile?.profile_username || user.id}`,
+          request.url
+        )
+      );
     }
 
     return response;
-  } catch (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _
-  ) {
+  } catch (error) {
     // If you are here, a Supabase client could not be created!
     // This is likely because you have not set up environment variables.
     // Check out http://localhost:3000 for Next Steps.
-    return NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
+    return NextResponse.redirect(new URL('/sign-in', request.url));
   }
 };

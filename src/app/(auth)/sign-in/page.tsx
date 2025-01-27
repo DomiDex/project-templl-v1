@@ -2,8 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { SignInForm } from '@/features/auth/components/sign-in-form';
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -58,55 +57,16 @@ export default function Page() {
               <h1 className='text-2xl font-bold mb-8 text-center text-gray-900 dark:text-gray-50'>
                 Sign In
               </h1>
-              <form className='space-y-4'>
-                <Input type='email' placeholder='Email' required />
-                <div className='space-y-2'>
-                  <Input type='password' placeholder='Password' required />
-                  <div className='flex justify-end'>
-                    <Link
-                      href='/forgot-password'
-                      className='text-sm text-purple-500 hover:text-purple-600 dark:text-purple-200 dark:hover:text-purple-100 transition-colors'
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
-                </div>
-                <Button
-                  fullWidth
-                  size='lg'
-                  className='bg-purple-500 hover:bg-purple-600 dark:bg-purple-400 dark:hover:bg-purple-300 dark:text-white transition-colors'
+              <SignInForm />
+              <p className='text-sm text-center mt-6 text-gray-500 dark:text-gray-400'>
+                Don&apos;t have an account?{' '}
+                <Link
+                  href='/sign-up'
+                  className='text-purple-500 hover:text-purple-600 dark:text-purple-200 dark:hover:text-purple-100 transition-colors'
                 >
-                  Sign In
-                </Button>
-                <div className='relative my-6'>
-                  <div className='absolute inset-0 flex items-center'>
-                    <span className='w-full border-t border-gray-200 dark:border-purple-600/50' />
-                  </div>
-                  <div className='relative flex justify-center text-xs uppercase'>
-                    <span className='bg-gray-50 dark:bg-purple-800/95 px-2 text-gray-500 dark:text-gray-400'>
-                      Or continue with
-                    </span>
-                  </div>
-                </div>
-                <Button
-                  variant='outline'
-                  fullWidth
-                  size='lg'
-                  className='border-gray-200 bg-white hover:bg-gray-50 dark:border-purple-400 dark:bg-purple-700/95 dark:text-gray-100 dark:hover:bg-purple-400/50 transition-colors'
-                >
-                  <GoogleIcon className='w-5 h-5 mr-2' />
-                  Sign in with Google
-                </Button>
-                <p className='text-sm text-center mt-6 text-gray-500 dark:text-gray-400'>
-                  Don&apos;t have an account?{' '}
-                  <Link
-                    href='/sign-up'
-                    className='text-purple-500 hover:text-purple-600 dark:text-purple-200 dark:hover:text-purple-100 transition-colors'
-                  >
-                    Sign up
-                  </Link>
-                </p>
-              </form>
+                  Sign up
+                </Link>
+              </p>
             </div>
           </div>
         </Container>
