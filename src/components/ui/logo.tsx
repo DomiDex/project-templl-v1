@@ -4,11 +4,11 @@ import { cn } from '@/utils/cn';
 
 interface LogoProps {
   className?: string;
-  width?: number;
+  width?: number | string;
   height?: number;
 }
 
-export function Logo({ className, width = 124, height = 36 }: LogoProps) {
+export function Logo({ className, width = '100%', height = 36 }: LogoProps) {
   const { theme } = useThemeStore();
   const fillColor = theme === 'dark' ? '#DEDEDE' : '#1F2937';
 

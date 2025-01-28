@@ -1,7 +1,9 @@
-export default function page() {
+import AccountHero from '@/features/account/components/AccountHero';
+
+export default function ProtectedPage() {
   return (
-    <div>
-      <h1>Protected</h1>
-    </div>
+    <main>
+      <AccountHero />
+    </main>
   );
 }

@@ -12,6 +12,7 @@ export default function Footer() {
           {/* Logo and Description */}
           <div className='col-span-1 md:col-span-2'>
             <Logo width={124} height={36} className='mb-4' />
+
             <p className='text-gray-600 dark:text-gray-300 max-w-md'>
               Create stunning website templates using Webflow, Framer, and
               Next.js. Join our community of designers and developers.

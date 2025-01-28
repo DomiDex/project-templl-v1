@@ -10,14 +10,13 @@ const accountNavigationItems = [
   { label: 'Dashboard', href: '/account/dashboard' },
   { label: 'Profile', href: '/account/profile' },
   {
-    label: 'Settings',
+    label: 'Promote Yourself',
     items: [
-      { label: 'Account Settings', href: '/account/settings' },
-      { label: 'Notifications', href: '/account/notifications' },
-      { label: 'Security', href: '/account/security' },
+      { label: 'Add a Template', href: '/account/settings' },
+      { label: 'add Services', href: '/account/notifications' },
+      { label: 'Add Open Source Project', href: '/account/security' },
     ],
   },
-  { label: 'Billing', href: '/account/billing' },
 ];
 
 export default function AccountHeader() {
