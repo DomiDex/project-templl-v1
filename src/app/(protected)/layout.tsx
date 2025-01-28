@@ -1,5 +1,4 @@
 import AccountHeader from '@/components/Layout/AccountHeader';
-import Footer from '@/components/Layout/Footer';
 
 export default function ProtectedLayout({
   children,
@@ -10,7 +9,6 @@ export default function ProtectedLayout({
     <>
       <AccountHeader />
       {children}
-      <Footer />
     </>
   );
 }
