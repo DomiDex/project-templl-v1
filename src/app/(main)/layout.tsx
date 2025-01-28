@@ -1,14 +1,14 @@
-import AccountHeader from '@/components/Layout/AccountHeader';
+import MainHeader from '@/components/Layout/MainHeader';
 import Footer from '@/components/Layout/Footer';
 
-export default function ProtectedLayout({
+export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
     <>
-      <AccountHeader />
+      <MainHeader />
       {children}
       <Footer />
     </>

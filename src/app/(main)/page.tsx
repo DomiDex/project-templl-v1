@@ -1,13 +1,9 @@
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
-import MainHeader from '@/components/Layout/MainHeader';
 
 export default function Home() {
   return (
-    <main className='min-h-screen '>
-      <MainHeader />
-      <h1>Hello World</h1>
-
+    <main className='min-h-screen'>
       {/* Primary background that changes with theme */}
       <Section padding='lg' background='primary'>
         <Container size='lg'>
