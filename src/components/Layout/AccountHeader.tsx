@@ -7,7 +7,7 @@ import SignInSystem from '@/features/auth/components/SignInSystem';
 import Link from 'next/link';
 
 const accountNavigationItems = [
-  { label: 'Dashboard', href: '/account/dashboard' },
+  { label: 'Dashboard', href: '/' },
   { label: 'Profile', href: '/account/profile' },
   {
     label: 'Promote Yourself',
@@ -23,7 +23,7 @@ export default function AccountHeader() {
   return (
     <header className='flex justify-between items-center px-4 py-2'>
       <div className='flex items-center gap-8'>
-        <Link href='/account/dashboard'>
+        <Link href='/'>
           <Logo width={90} height={30} />
         </Link>
         <MainNav navigationItems={accountNavigationItems} />

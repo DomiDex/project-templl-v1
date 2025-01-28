@@ -1,57 +1,30 @@
 'use client';
 
-import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
-
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { useAuthStore } from '../stores/useAuthStore';
 
 export default function LoginLogout() {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const supabase = createClient();
+  const { isAuthenticated, signOut } = useAuthStore();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setIsAuthenticated(!!session);
-    };
+  const handleSignOut = () => {
+    signOut();
+    router.push('/');
+  };
 
-    checkAuth();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [supabase.auth]);
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
+  const handleSignIn = () => {
     router.push('/sign-in');
   };
 
-  if (isAuthenticated) {
-    return (
-      <button
-        onClick={handleLogout}
-        className='flex items-center gap-2 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100 transition-colors px-2'
-      >
-        <p>Logout</p>
-      </button>
-    );
-  }
-
   return (
-    <Link
-      href='/sign-in'
-      className='flex items-center gap-2 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100 transition-colors px-2'
+    <Button
+      onClick={isAuthenticated ? handleSignOut : handleSignIn}
+      variant='ghost'
+      size='sm'
+      className='text-purple-700 hover:text-purple-800 dark:text-purple-300 dark:hover:text-purple-200'
     >
-      <p>Login</p>
-    </Link>
+      {isAuthenticated ? 'Sign Out' : 'Sign In'}
+    </Button>
   );
 }

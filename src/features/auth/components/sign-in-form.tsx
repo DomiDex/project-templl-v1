@@ -3,61 +3,56 @@
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { signIn } from '../actions/sign-in';
-import { AuthError } from './auth-error';
+import { useAuthStore } from '../stores/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { GoogleIcon } from '@/components/icons/google';
 import Link from 'next/link';
 
 export function SignInForm() {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { signIn, setLoading } = useAuthStore();
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
-
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      email: formData.get('email') as string,
-      password: formData.get('password') as string,
-    };
 
     try {
-      const result = await signIn(data);
+      const user = {
+        id: '1',
+        email,
+        name: 'User Name',
+      };
 
-      if ('error' in result) {
-        setError(result.error || 'An error occurred');
-      } else if ('success' in result) {
-        router.replace(result.redirectTo);
-      }
-    } catch {
-      setError('An unexpected error occurred');
-    } finally {
+      signIn(user);
+      // Redirect to the user's profile page
+      router.push(`/${user.id}`);
+    } catch (error) {
+      console.error('Sign in failed:', error);
       setLoading(false);
     }
-  }
+  };
 
   return (
     <div className='space-y-4'>
       <form onSubmit={handleSubmit} className='space-y-4'>
-        {error && <AuthError message={error} />}
         <Input
           type='email'
-          name='email'
           placeholder='Email'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
-          disabled={loading}
+          className='dark:bg-darkGray dark:border-gray-700'
         />
         <div className='space-y-2'>
           <Input
             type='password'
-            name='password'
             placeholder='Password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
-            disabled={loading}
+            className='dark:bg-darkGray dark:border-gray-700'
           />
           <div className='flex justify-end'>
             <Link
@@ -69,13 +64,12 @@ export function SignInForm() {
           </div>
         </div>
         <Button
+          type='submit'
           fullWidth
           size='lg'
-          type='submit'
-          disabled={loading}
           className='bg-purple-500 hover:bg-purple-600 dark:bg-purple-400 dark:hover:bg-purple-300 dark:text-white transition-colors'
         >
-          {loading ? 'Signing in...' : 'Sign In'}
+          Sign In
         </Button>
       </form>
 

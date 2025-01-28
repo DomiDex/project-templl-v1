@@ -1,41 +1,34 @@
 'use client';
 
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { createClient } from '@/utils/supabase/client';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { useAuthStore } from '../stores/useAuthStore';
 
 export default function SubmitAccountButton() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
-  const supabase = createClient();
+  const router = useRouter();
+  const { isAuthenticated, user } = useAuthStore();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setIsAuthenticated(!!session);
-      setUserId(session?.user?.id || null);
-    };
-
-    checkAuth();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
-      setUserId(session?.user?.id || null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [supabase.auth]);
+  if (!isAuthenticated) {
+    return (
+      <Button
+        onClick={() => router.push('/sign-up')}
+        variant='default'
+        size='sm'
+        className='bg-purple-600 hover:bg-purple-700 text-white dark:bg-purple-500 dark:hover:bg-purple-400'
+      >
+        Submit Here
+      </Button>
+    );
+  }
 
   return (
-    <Link
-      href={isAuthenticated ? `/protected/${userId}` : '/sign-up'}
-      className='flex items-center gap-2 bg-purple-500 hover:bg-purple-600 dark:bg-purple-400 dark:hover:bg-purple-300 dark:text-white text-gray-50 transition-colors duration-300 px-4 py-2 rounded-md'
+    <Button
+      onClick={() => router.push(`/${user?.id}`)}
+      variant='default'
+      size='sm'
+      className='bg-purple-600 hover:bg-purple-700 text-white dark:bg-purple-500 dark:hover:bg-purple-400'
     >
-      <p>{isAuthenticated ? 'My Account' : 'Submit Here'}</p>
-    </Link>
+      Account
+    </Button>
   );
 }
