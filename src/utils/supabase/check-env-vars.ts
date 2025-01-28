@@ -4,30 +4,36 @@
 import { createBrowserClient } from '@supabase/ssr';
 
 export function checkEnvVars() {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    console.error('Missing NEXT_PUBLIC_SUPABASE_URL environment variable');
-    throw new Error('Missing required environment variables');
-  }
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    console.error('Missing NEXT_PUBLIC_SUPABASE_ANON_KEY environment variable');
-    throw new Error('Missing required environment variables');
-  }
+  console.log('Environment check:', {
+    hasUrl: !!supabaseUrl,
+    hasKey: !!supabaseKey,
+    nodeEnv: process.env.NODE_ENV,
+  });
 
-  // Test client creation
-  try {
-    createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  if (!supabaseUrl || !supabaseKey) {
+    console.error('Environment variables missing:', {
+      NEXT_PUBLIC_SUPABASE_URL: !!supabaseUrl,
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: !!supabaseKey,
+    });
+    throw new Error(
+      `Missing environment variables. URL: ${!!supabaseUrl}, Key: ${!!supabaseKey}`
     );
+  }
+
+  try {
+    const client = createBrowserClient(supabaseUrl, supabaseKey);
+    if (!client) throw new Error('Failed to create client');
   } catch (error) {
-    console.error('Failed to create Supabase client:', error);
-    throw new Error('Invalid Supabase configuration');
+    console.error('Supabase client creation failed:', error);
+    throw error;
   }
 
   return {
     hasEnvVars: true,
-    supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    supabaseUrl,
+    supabaseKey,
   };
 }

@@ -8,7 +8,7 @@ export async function signUp(formData: SignUpFormData) {
     // Validate the form data first
     const validatedData = SignUpSchema.parse(formData);
 
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Create auth user
     const { data: authData, error: authError } = await supabase.auth.signUp({

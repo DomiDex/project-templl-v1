@@ -6,7 +6,7 @@ import { SignInFormData, SignInSchema } from '../types';
 export async function signIn(formData: SignInFormData) {
   try {
     const validatedData = SignInSchema.parse(formData);
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const {
       data: { user },
