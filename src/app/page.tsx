@@ -1,13 +1,11 @@
-import { ThemeSwitch } from '@/features/theme/components/theme-switch';
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
+import MainHeader from '@/components/Layout/MainHeader';
 
 export default function Home() {
   return (
     <main className='min-h-screen '>
-      <nav className='flex justify-end p-4'>
-        <ThemeSwitch />
-      </nav>
+      <MainHeader />
       <h1>Hello World</h1>
 
       {/* Primary background that changes with theme */}
