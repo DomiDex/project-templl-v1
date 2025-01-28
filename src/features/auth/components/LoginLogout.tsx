@@ -39,7 +39,7 @@ export default function LoginLogout() {
     return (
       <button
         onClick={handleLogout}
-        className='flex items-center gap-2 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100 transition-colors'
+        className='flex items-center gap-2 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100 transition-colors px-2'
       >
         <p>Logout</p>
       </button>
@@ -49,7 +49,7 @@ export default function LoginLogout() {
   return (
     <Link
       href='/sign-in'
-      className='flex items-center gap-2 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100 transition-colors'
+      className='flex items-center gap-2 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100 transition-colors px-2'
     >
       <p>Login</p>
     </Link>
