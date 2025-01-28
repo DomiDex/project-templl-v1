@@ -1,8 +1,9 @@
 import { createBrowserClient } from '@supabase/ssr';
 import { Database } from '@/types';
+import { checkEnvVars } from './check-env-vars';
 
-export const createClient = () =>
-  createBrowserClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+export const createClient = () => {
+  const { supabaseUrl, supabaseKey } = checkEnvVars();
+
+  return createBrowserClient<Database>(supabaseUrl, supabaseKey);
+};
