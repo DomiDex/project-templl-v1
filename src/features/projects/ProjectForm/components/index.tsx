@@ -8,8 +8,8 @@ import { ProjectDescription } from './ProjectDescription';
 import { MetaFields } from './MetaFields';
 import { ImageUpload } from './ImageUpload';
 import { SubmitButton } from './SubmitButton';
-import { useProjectForm } from './hooks/useProjectForm';
-import { useStackOptions } from './hooks/useStackOptions';
+import { useProjectForm } from '../hooks/useProjectForm';
+import { useStackOptions } from '../hooks/useStackOptions';
 
 export default function ProjectForm() {
   const [loading, setLoading] = useState(false);

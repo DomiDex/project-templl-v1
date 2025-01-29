@@ -1,4 +1,4 @@
-import { INPUT_CLASSES } from './constants';
+import { INPUT_CLASSES } from '../constants';
 
 interface ProjectDescriptionProps {
   value: string;

@@ -6,7 +6,7 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
-import Index from '@/features/projects/components/ProjectForm';
+import Index from '@/features/projects/ProjectForm/components';
 
 export default function Page() {
   const [username, setUsername] = useState<string | null>(null);

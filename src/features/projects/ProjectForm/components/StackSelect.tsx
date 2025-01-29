@@ -1,5 +1,5 @@
-import { StackOption } from './types';
-import { INPUT_CLASSES } from './constants';
+import { StackOption } from '../types';
+import { INPUT_CLASSES } from '../constants';
 
 interface StackSelectProps {
   value: string;
