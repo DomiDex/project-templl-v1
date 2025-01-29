@@ -7,29 +7,44 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { GoogleIcon } from '@/components/icons/google';
 import Link from 'next/link';
+import { signIn } from '../actions/sign-in';
+import { AuthError } from './auth-error';
 
 export function SignInForm() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { signIn, setLoading } = useAuthStore();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const { signIn: setAuthUser } = useAuthStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     setLoading(true);
 
     try {
-      const user = {
-        id: '1',
-        email,
-        name: 'User Name',
-      };
+      const result = await signIn({ email, password });
+      if ('error' in result) {
+        setError(result.error ?? 'An error occurred');
+        return;
+      }
 
-      signIn(user);
-      // Redirect to the user's profile page
-      router.push(`/${user.id}`);
+      if (result.success && result.redirectTo) {
+        // Set the authenticated user in the store
+        setAuthUser({
+          id: result.user.id,
+          email: result.user.email!,
+          name: result.user.user_metadata?.username,
+        });
+
+        // Redirect to the profile page
+        router.push(result.redirectTo);
+      }
     } catch (error) {
-      console.error('Sign in failed:', error);
+      setError('An unexpected error occurred');
+      console.error('Sign in error:', error);
+    } finally {
       setLoading(false);
     }
   };
@@ -37,12 +52,14 @@ export function SignInForm() {
   return (
     <div className='space-y-4'>
       <form onSubmit={handleSubmit} className='space-y-4'>
+        {error && <AuthError message={error} />}
         <Input
           type='email'
           placeholder='Email'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          disabled={loading}
           className='dark:bg-darkGray dark:border-gray-700'
         />
         <div className='space-y-2'>
@@ -52,6 +69,7 @@ export function SignInForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={loading}
             className='dark:bg-darkGray dark:border-gray-700'
           />
           <div className='flex justify-end'>
@@ -67,9 +85,10 @@ export function SignInForm() {
           type='submit'
           fullWidth
           size='lg'
+          disabled={loading}
           className='bg-purple-500 hover:bg-purple-600 dark:bg-purple-400 dark:hover:bg-purple-300 dark:text-white transition-colors'
         >
-          Sign In
+          {loading ? 'Signing in...' : 'Sign In'}
         </Button>
       </form>
 
@@ -89,6 +108,7 @@ export function SignInForm() {
         variant='outline'
         fullWidth
         size='lg'
+        disabled={loading}
         className='flex items-center justify-center gap-2 border-[1px] border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-purple-700 transition-colors'
       >
         <GoogleIcon className='w-5 h-5' />

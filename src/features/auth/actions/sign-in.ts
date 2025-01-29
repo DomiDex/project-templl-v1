@@ -33,6 +33,7 @@ export async function signIn(formData: SignInFormData) {
     return {
       success: true,
       redirectTo: `/${profile?.profile_username || user.id}`,
+      user,
     };
   } catch (error) {
     console.error('Sign in error:', error);
