@@ -32,7 +32,7 @@ export async function signIn(formData: SignInFormData) {
 
     return {
       success: true,
-      redirectTo: `/${profile?.profile_username || user.id}`,
+      redirectTo: `account/${profile?.profile_username || user.id}`,
       user,
     };
   } catch (error) {

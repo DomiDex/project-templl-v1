@@ -5,8 +5,7 @@ export const updateSession = async (request: NextRequest) => {
   // This `try/catch` block is only here for the interactive tutorial.
   // Feel free to remove once you have Supabase connected.
   try {
-    // Create an unmodified response
-    let response = NextResponse.next({
+    const response = NextResponse.next({
       request: {
         headers: request.headers,
       },
@@ -18,18 +17,23 @@ export const updateSession = async (request: NextRequest) => {
       {
         cookies: {
           getAll() {
-            return request.cookies.getAll();
-          },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value }) =>
-              request.cookies.set(name, value)
-            );
-            response = NextResponse.next({
-              request,
+            const cookiesObj: { [key: string]: string } = {};
+            request.cookies.getAll().forEach((cookie) => {
+              cookiesObj[cookie.name] = cookie.value;
             });
-            cookiesToSet.forEach(({ name, value, options }) =>
-              response.cookies.set(name, value, options)
-            );
+            return Object.entries(cookiesObj).map(([name, value]) => ({
+              name,
+              value,
+            }));
+          },
+          setAll(cookies) {
+            cookies.forEach(({ name, value, ...options }) => {
+              response.cookies.set({
+                name,
+                value,
+                ...options,
+              });
+            });
           },
         },
       }
@@ -41,24 +45,21 @@ export const updateSession = async (request: NextRequest) => {
       data: { user },
     } = await supabase.auth.getUser();
 
-    // If trying to access a protected route
-    if (request.nextUrl.pathname.startsWith('/protected/')) {
+    // Block access to /protected/* routes for non-authenticated users
+    if (request.nextUrl.pathname.startsWith('/account/')) {
       if (!user) {
         return NextResponse.redirect(new URL('/sign-in', request.url));
       }
 
-      // Extract the username/id from the URL
       const urlPath = request.nextUrl.pathname;
-      const requestedId = urlPath.split('/protected/')[1];
+      const requestedId = urlPath.split('/account/')[1].split('/')[0];
 
-      // Get the user's profile to check username
       const { data: profile } = await supabase
         .from('profiles')
         .select('profile_username')
         .eq('id', user.id)
         .single();
 
-      // Check if the requested path matches the user's profile
       if (
         requestedId !== profile?.profile_username &&
         requestedId !== user.id
@@ -67,6 +68,12 @@ export const updateSession = async (request: NextRequest) => {
       }
     }
 
+    // Block direct access to dynamic routes outside of /protected
+    if (request.nextUrl.pathname.match(/^\/[^/]+$/)) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+
+    // Handle root path redirect for authenticated users
     if (request.nextUrl.pathname === '/' && user) {
       const { data: profile } = await supabase
         .from('profiles')
@@ -75,10 +82,7 @@ export const updateSession = async (request: NextRequest) => {
         .single();
 
       return NextResponse.redirect(
-        new URL(
-          `/protected/${profile?.profile_username || user.id}`,
-          request.url
-        )
+        new URL(`/account/${profile?.profile_username || user.id}`, request.url)
       );
     }
 
