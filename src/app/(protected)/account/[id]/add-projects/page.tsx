@@ -3,10 +3,11 @@
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
-import ProjectForm from './ProjectForm';
+
 import { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
+import Index from '@/features/projects/components/ProjectForm';
 
 export default function Page() {
   const [username, setUsername] = useState<string | null>(null);
@@ -48,7 +49,7 @@ export default function Page() {
           <h1 className='text-4xl font-bold text-gray-900 dark:text-gray-50 mb-8'>
             Add Your Project
           </h1>
-          <ProjectForm />
+          <Index />
         </div>
       </Container>
     </Section>
