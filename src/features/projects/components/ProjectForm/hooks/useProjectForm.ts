@@ -20,7 +20,11 @@ export function useProjectForm() {
       const baseSlug = formData.project_name
         .toLowerCase()
         .trim()
-        .replace(/[^a-z0-9]+/g, '-')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9-\s]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
         .replace(/^-+|-+$/g, '');
 
       const randomSuffix = Math.random().toString(36).substring(2, 7);
