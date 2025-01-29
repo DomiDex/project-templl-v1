@@ -3,6 +3,7 @@
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
+import ProjectForm from './ProjectForm';
 import { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
@@ -34,8 +35,8 @@ export default function Page() {
       href: `/account/${username || user?.id}`,
     },
     {
-      label: 'Add Services',
-      href: `/account/${username || user?.id}/add-services`,
+      label: 'Add Projects',
+      href: `/account/${username || user?.id}/add-projects`,
     },
   ];
 
@@ -43,9 +44,12 @@ export default function Page() {
     <Section padding='lg'>
       <Container size='lg'>
         <Breadcrumb items={breadcrumbItems} className='mb-6' />
-        <h1 className='text-4xl font-bold text-gray-900 dark:text-gray-50'>
-          Add Your Services
-        </h1>
+        <div className='max-w-2xl '>
+          <h1 className='text-4xl font-bold text-gray-900 dark:text-gray-50 mb-8'>
+            Add Your Project
+          </h1>
+          <ProjectForm />
+        </div>
       </Container>
     </Section>
   );

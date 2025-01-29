@@ -5,20 +5,20 @@ import { NavDropdown } from './NavDropdown';
 import { MobileNav } from './MobileNav';
 import { cn } from '@/utils/cn';
 
-interface NavItem {
+export interface NavItem {
   label: string;
   href: string;
 }
 
-interface NavItemWithDropdown {
+export interface NavItemWithDropdown {
   label: string;
   items: NavItem[];
 }
 
-type NavigationItem = NavItem | NavItemWithDropdown;
+export type NavigationItem = NavItem | NavItemWithDropdown;
 
-interface MainNavProps {
-  navigationItems?: NavigationItem[];
+export interface MainNavProps {
+  items?: NavigationItem[];
 }
 
 const defaultNavigationItems: NavigationItem[] = [
@@ -35,12 +35,10 @@ const defaultNavigationItems: NavigationItem[] = [
   { label: 'Contact', href: '/contact' },
 ];
 
-export function MainNav({
-  navigationItems = defaultNavigationItems,
-}: MainNavProps) {
+export function MainNav({ items = defaultNavigationItems }: MainNavProps) {
   const renderNavItems = (mobile = false) => (
     <>
-      {navigationItems.map((item) => {
+      {items.map((item) => {
         if ('items' in item) {
           return (
             <NavDropdown key={item.label} label={item.label}>
