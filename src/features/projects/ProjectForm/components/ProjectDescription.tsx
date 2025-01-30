@@ -1,4 +1,4 @@
-import { INPUT_CLASSES } from '../constants';
+import { MarkdownEditor } from './MarkdownEditor';
 
 interface ProjectDescriptionProps {
   value: string;
@@ -10,22 +10,11 @@ export function ProjectDescription({
   onChange,
 }: ProjectDescriptionProps) {
   return (
-    <div>
-      <label
-        htmlFor='long_description'
-        className='block text-sm font-medium text-gray-700 dark:text-gray-200'
-      >
-        Description
-      </label>
-      <textarea
-        id='long_description'
-        required
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        rows={4}
-        className={INPUT_CLASSES}
-        placeholder='Describe your project'
-      />
-    </div>
+    <MarkdownEditor
+      value={value}
+      onChange={onChange}
+      label='Description'
+      placeholder='Describe your project using markdown...'
+    />
   );
 }

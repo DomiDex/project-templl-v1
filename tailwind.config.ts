@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import typography from '@tailwindcss/typography';
 
 export default {
   content: [
@@ -71,7 +72,27 @@ export default {
       fontFamily: {
         custom: ['var(--font-custom)'],
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: 'none',
+            color: 'inherit',
+            a: {
+              color: '#4F394C',
+              '&:hover': {
+                color: '#726170',
+              },
+            },
+            code: {
+              color: '#4F394C',
+              backgroundColor: '#F5F3F5',
+              padding: '0.2em 0.4em',
+              borderRadius: '3px',
+            },
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [typography],
 } satisfies Config;
