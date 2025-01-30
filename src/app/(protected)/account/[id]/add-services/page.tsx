@@ -6,6 +6,7 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
+import ServiceForm from '@/features/services/ServiceForm/components';
 
 export default function Page() {
   const [username, setUsername] = useState<string | null>(null);
@@ -43,9 +44,12 @@ export default function Page() {
     <Section padding='lg'>
       <Container size='lg'>
         <Breadcrumb items={breadcrumbItems} className='mb-6' />
-        <h1 className='text-4xl font-bold text-gray-900 dark:text-gray-50'>
-          Add Your Services
-        </h1>
+        <div className='max-w-2xl'>
+          <h1 className='text-4xl font-bold text-gray-900 dark:text-gray-50 mb-8'>
+            Add Your Service
+          </h1>
+          <ServiceForm />
+        </div>
       </Container>
     </Section>
   );
